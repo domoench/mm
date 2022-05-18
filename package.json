@@ -4,7 +4,7 @@
   "description": "Mental math practice",
   "main": "bin/index.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec test/*"
   },
   "author": "David Ouyang Moench",
   "license": "ISC",
