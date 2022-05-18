@@ -1,0 +1,24 @@
+{
+  "name": "mental-math",
+  "version": "1.0.0",
+  "description": "Mental math practice",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "author": "David Ouyang Moench",
+  "license": "ISC",
+  "type": "module",
+  "bin": {
+    "mm": "./bin/index.js"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "eslint": "^8.15.0",
+    "mocha": "^10.0.0"
+  },
+  "dependencies": {
+    "readline-sync": "^1.4.10",
+    "sqlite3": "^5.0.8"
+  }
+}
