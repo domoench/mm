@@ -94,7 +94,6 @@ const printGranularStats = async () => {
   });
   console.log("Granular Stats:");
   console.table(stats);
-  // TODO try ascii charts
 };
 
 const printAggregateStats = async () => {
@@ -109,7 +108,6 @@ const printAggregateStats = async () => {
   });
   console.log("Aggregate Stats:");
   console.table(stats);
-  // TODO try ascii charts
 };
 
 const gracefulExit = async (summary) => {
