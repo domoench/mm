@@ -89,6 +89,7 @@ const printGranularStats = async () => {
       ...stat,
       total_time: msToS(stat.total_time),
       avg_time: msToS(stat.avg_time),
+      correct_ratio: stat.correct_ratio.toFixed(2),
     };
   });
   console.log("Granular Stats:");
@@ -103,6 +104,7 @@ const printAggregateStats = async () => {
       ...stat,
       total_time: msToS(stat.total_time),
       avg_time: msToS(stat.avg_time),
+      correct_ratio: stat.correct_ratio.toFixed(2),
     };
   });
   console.log("Aggregate Stats:");

@@ -4,20 +4,20 @@
   "description": "Mental math practice",
   "main": "bin/index.js",
   "scripts": {
+    "start": "node ./bin/app.js",
+    "cli": "node ./bin/cli.js",
     "test": "mocha --reporter spec test/*"
   },
   "author": "David Ouyang Moench",
   "license": "ISC",
   "type": "module",
-  "bin": {
-    "mm": "./bin/index.js"
-  },
   "devDependencies": {
     "chai": "^4.3.6",
     "eslint": "^8.15.0",
     "mocha": "^10.0.0"
   },
   "dependencies": {
+    "express": "^4.18.1",
     "readline-sync": "^1.4.10",
     "sqlite3": "^5.0.8"
   }
