@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
-import Question from "./Question";
+import Quiz from "./Quiz";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Question></Question>
+        <Quiz></Quiz>
       </header>
     </div>
   );
