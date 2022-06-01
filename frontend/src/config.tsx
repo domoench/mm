@@ -1,8 +1,9 @@
-export const ADD = "+";
-export const SUBTRACT = "-";
-export const MULTIPLY = "*";
-export const DIVIDE = "/";
-export const operations = [ADD, SUBTRACT, MULTIPLY, DIVIDE];
+export enum Operator {
+  Add = "+",
+  Subtract = "-",
+  Multiply = "*",
+  Divide = "/",
+}
 
 // TODO
 // - SQUARE (i.e. multiplication by same operand. p44)
@@ -11,7 +12,7 @@ export const operations = [ADD, SUBTRACT, MULTIPLY, DIVIDE];
 // For each problem type, map a difficulty rating [1,10] to a list of n,m tuple
 // where n and m are the number of digits for the first and second operand
 export const DIFFICULTIES = {
-  [ADD]: {
+  [Operator.Add]: {
     1: [[1, 1]],
     2: [[2, 1]],
     3: [[2, 2]],
@@ -26,7 +27,7 @@ export const DIFFICULTIES = {
     9: [[4, 4]],
     10: [[4, 4]],
   },
-  [SUBTRACT]: {
+  [Operator.Subtract]: {
     1: [[1, 1]],
     2: [[2, 1]],
     3: [[2, 2]],
@@ -44,7 +45,7 @@ export const DIFFICULTIES = {
     9: [[4, 4]],
     10: [[4, 4]],
   },
-  [MULTIPLY]: {
+  [Operator.Multiply]: {
     1: [[1, 1]],
     2: [[2, 1]],
     3: [[2, 1]],
@@ -62,7 +63,7 @@ export const DIFFICULTIES = {
       [2, 3],
     ],
   },
-  [DIVIDE]: {
+  [Operator.Divide]: {
     1: [[2, 1]],
     2: [[3, 1]],
     3: [[4, 1]],

@@ -1,5 +1,3 @@
-"use strict";
-
 // Return an integer between a and b (inclusive)
 export const randBetween = (a: number, b: number) => {
   return a + Math.floor(Math.random() * (b - a + 1));
