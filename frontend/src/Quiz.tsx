@@ -5,16 +5,14 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from "react";
-import { OpTuple } from "./lib/mm";
+import { OpTuple, getNAndM } from "./lib/mm";
 import { randomElem } from "./lib/utils";
 import { Result, ResultProps } from "./Result";
-import { Operator } from "./config";
+import { Operator, difficultyRange } from "./config";
 
 interface QuizSettingsState {
   difficulty: number;
   operators: Operator[];
-  m: number;
-  n: number;
 }
 
 const Quiz = () => {
@@ -22,9 +20,12 @@ const Quiz = () => {
 
   const [quizSettings, setQuizSettings] = useState<QuizSettingsState>({
     difficulty: 3,
-    operators: [Operator.Add, Operator.Subtract, Operator.Multiply, Operator.Divide],
-    m: 2,
-    n: 2,
+    operators: [
+      Operator.Add,
+      Operator.Subtract,
+      Operator.Multiply,
+      Operator.Divide,
+    ],
   });
   const toggleAdd = () => {
     toggleOperator(Operator.Add);
@@ -41,7 +42,7 @@ const Quiz = () => {
   const opIsActive = (op: Operator) => {
     const { operators } = quizSettings;
     return operators.findIndex((x) => x === op) >= 0;
-  }
+  };
   const toggleOperator = (op: Operator) => {
     const newOperators = opIsActive(op)
       ? quizSettings.operators.filter((x) => x !== op)
@@ -51,10 +52,20 @@ const Quiz = () => {
       operators: newOperators,
     });
   };
+  const setDifficulty = (level: number) => {
+    setQuizSettings({
+      ...quizSettings,
+      difficulty: level,
+    });
+  }
+  const handleDifficultyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setDifficulty(parseInt(event.target.value));
+  };
 
-  randomElem(quizSettings.operators);
+  const randomOp = randomElem(quizSettings.operators);
+  const [n, m] = getNAndM(randomOp, quizSettings.difficulty);
   const [opTuple, setOpTuple] = useState(
-    OpTuple(randomElem(quizSettings.operators), quizSettings.m, quizSettings.n)
+    OpTuple(randomElem(quizSettings.operators), n, m)
   );
   const { operator, op_1, op_2, answer } = opTuple;
 
@@ -78,7 +89,8 @@ const Quiz = () => {
 
     // Generate a new question to rerender
     const randomOp = randomElem(quizSettings.operators);
-    setOpTuple(OpTuple(randomOp, quizSettings.m, quizSettings.n)); // TODO configurable difficulty
+    const [n, m] = getNAndM(randomOp, quizSettings.difficulty);
+    setOpTuple(OpTuple(randomOp, n, m));
     setUserAnswer("");
     setLastResult({
       isCorrect,
@@ -93,24 +105,51 @@ const Quiz = () => {
     <>
       <ul>
         <li>
-          <button type="button" onClick={toggleAdd} className={`${opIsActive(Operator.Add) ? "active" : ""}`}>
+          <button
+            type="button"
+            onClick={toggleAdd}
+            className={`${opIsActive(Operator.Add) ? "active" : ""}`}
+          >
             +
           </button>
         </li>
         <li>
-          <button type="button" onClick={toggleSubtract} className={`${opIsActive(Operator.Subtract) ? "active" : ""}`}>
+          <button
+            type="button"
+            onClick={toggleSubtract}
+            className={`${opIsActive(Operator.Subtract) ? "active" : ""}`}
+          >
             -
           </button>
         </li>
         <li>
-          <button type="button" onClick={toggleMultiply} className={`${opIsActive(Operator.Multiply) ? "active" : ""}`}>
+          <button
+            type="button"
+            onClick={toggleMultiply}
+            className={`${opIsActive(Operator.Multiply) ? "active" : ""}`}
+          >
             *
           </button>
         </li>
         <li>
-          <button type="button" onClick={toggleDivide} className={`${opIsActive(Operator.Divide) ? "active" : ""}`}>
+          <button
+            type="button"
+            onClick={toggleDivide}
+            className={`${opIsActive(Operator.Divide) ? "active" : ""}`}
+          >
             /
           </button>
+        </li>
+        <li>
+          <form>
+            <select value={quizSettings.difficulty} onChange={handleDifficultyChange}>
+              {difficultyRange.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
+          </form>
         </li>
       </ul>
       <form onSubmit={submitHandler}>

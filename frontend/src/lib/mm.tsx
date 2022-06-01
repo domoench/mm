@@ -1,12 +1,12 @@
-import { randBetween, smallestInt, largestInt } from "./utils";
-import { Operator } from "../config";
+import { randBetween, randomElem, smallestInt, largestInt } from "./utils";
+import { Operator, DIFFICULTIES } from "../config";
 
 export interface OpTupleReturn {
   operator: Operator;
   op_1: number;
   op_2: number;
   answer: number;
-};
+}
 
 /**
  * Returns a tuple (operator, operand_1, operand_2, answer) for a
@@ -16,7 +16,11 @@ export interface OpTupleReturn {
  * @param {number} n - An integer number of digits for the first operand
  * @param {number} m - An integer number of digits for the second operand
  */
-export const OpTuple = (operator: Operator, n: number, m: number): OpTupleReturn => {
+export const OpTuple = (
+  operator: Operator,
+  n: number,
+  m: number
+): OpTupleReturn => {
   const op_1 = randBetween(smallestInt(n), largestInt(n));
   const op_2 = randBetween(smallestInt(m), largestInt(m));
   let answer = NaN;
@@ -40,4 +44,10 @@ export const OpTuple = (operator: Operator, n: number, m: number): OpTupleReturn
     op_2,
     answer,
   };
+};
+
+export const getNAndM = (op: Operator, difficulty: number) => {
+  const diff = `${difficulty}`;
+  const nAndMs: number[][] = (DIFFICULTIES[op] as any)[diff]; // TODO what?
+  return randomElem(nAndMs);
 };
