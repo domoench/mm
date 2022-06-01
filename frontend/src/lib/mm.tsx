@@ -46,8 +46,9 @@ export const OpTuple = (
   };
 };
 
+// Get the number of digits for each of the two operands (n and m) based on difficulty.
 export const getNAndM = (op: Operator, difficulty: number) => {
   const diff = `${difficulty}`;
-  const nAndMs: number[][] = (DIFFICULTIES[op] as any)[diff]; // TODO what?
+  const nAndMs: number[][] = (DIFFICULTIES[op] as any)[diff];
   return randomElem(nAndMs);
 };
