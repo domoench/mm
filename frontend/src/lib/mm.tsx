@@ -52,3 +52,9 @@ export const getNAndM = (op: Operator, difficulty: number) => {
   const nAndMs: number[][] = (DIFFICULTIES[op] as any)[diff];
   return randomElem(nAndMs);
 };
+
+export const randomOpTuple = (operatorOptions: Operator[], difficulty: number) => {
+  const randomOp = randomElem(operatorOptions);
+  const [n, m] = getNAndM(randomOp, difficulty);
+  return OpTuple(randomOp, n, m);
+};

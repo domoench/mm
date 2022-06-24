@@ -5,8 +5,7 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from "react";
-import { OpTuple, getNAndM } from "./lib/mm";
-import { randomElem } from "./lib/utils";
+import { randomOpTuple } from "./lib/mm";
 import { Result, ResultProps } from "./Result";
 import { Operator, difficultyRange } from "./config";
 
@@ -57,15 +56,16 @@ const Quiz = () => {
       ...quizSettings,
       difficulty: level,
     });
-  }
+  };
   const handleDifficultyChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setDifficulty(parseInt(event.target.value));
   };
 
-  const randomOp = randomElem(quizSettings.operators);
-  const [n, m] = getNAndM(randomOp, quizSettings.difficulty);
+  // TODO consider packagins some of this state up in a questionState object
+  // startTime, opTuple, perhaps even userAnswer?
+  // questionState exists until user hits submit, then it is overwritten by the next question
   const [opTuple, setOpTuple] = useState(
-    OpTuple(randomElem(quizSettings.operators), n, m)
+    randomOpTuple(quizSettings.operators, quizSettings.difficulty)
   );
   const { operator, op_1, op_2, answer } = opTuple;
 
@@ -74,24 +74,56 @@ const Quiz = () => {
     setUserAnswer(event.target.value);
   };
 
+  const [startTime, setStartTime] = useState<Date>(new Date());
+
   const [lastResult, setLastResult] = useState<ResultProps | null>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   });
 
+  // TODO move this elsewhere
+  interface Stats {
+    type: Operator;
+    sub_type: string | null;
+    correct: boolean;
+    difficulty: number;
+    start_time: string;
+    duration: number;
+  }
+
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const submitTime = new Date();
+
     const userAnswerFloat = parseFloat(userAnswer); // TODO handle parse error
     const isCorrect = userAnswerFloat === answer;
 
-    // TODO submit stats to backend
+    // Submit stats to backend
+    const stats: Stats = {
+      type: operator,
+      sub_type: null,
+      correct: isCorrect,
+      difficulty: quizSettings.difficulty,
+      start_time: startTime.toISOString(), // TODO is this UTC? Where to define start time?
+      duration: submitTime.valueOf() - startTime.valueOf(),
+    };
+
+    // TODO configure URL
+    fetch("http://localhost:3000/stats", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(stats),
+    }); // TODO confirm express receives the post JSON payload
+    // TODO: No need to await this, but would be good to async log whether or not it succeeded. Could eventually
+    // build functionality to try again on failure.
 
     // Generate a new question to rerender
-    const randomOp = randomElem(quizSettings.operators);
-    const [n, m] = getNAndM(randomOp, quizSettings.difficulty);
-    setOpTuple(OpTuple(randomOp, n, m));
+    setOpTuple(randomOpTuple(quizSettings.operators, quizSettings.difficulty));
     setUserAnswer("");
+    setStartTime(new Date());
     setLastResult({
       isCorrect,
       userAnswer: userAnswerFloat,
@@ -142,7 +174,10 @@ const Quiz = () => {
         </li>
         <li>
           <form>
-            <select value={quizSettings.difficulty} onChange={handleDifficultyChange}>
+            <select
+              value={quizSettings.difficulty}
+              onChange={handleDifficultyChange}
+            >
               {difficultyRange.map((level) => (
                 <option key={level} value={level}>
                   {level}

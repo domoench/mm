@@ -4,6 +4,7 @@
   "description": "Mental math practice",
   "main": "bin/index.js",
   "scripts": {
+    "dev": "DEBUG=express:* node ./bin/app.js",
     "start": "node ./bin/app.js",
     "cli": "node ./bin/cli.js",
     "test": "mocha --reporter spec test/*"
@@ -17,6 +18,7 @@
     "mocha": "^10.0.0"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "readline-sync": "^1.4.10",
     "sqlite3": "^5.0.8"
