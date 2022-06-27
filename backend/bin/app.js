@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { writeStat } from "../lib/db.js";
+import { printGranularStats, printAggregateStats } from "../lib/mm.js";
 
 const app = express();
 const port = 3000;
@@ -26,6 +27,8 @@ app.post("/stats", async (req, res) => {
   const stats = req.body; // TODO Is there a way to use the Stats typescript type from frontend?
   await writeStat(stats); // TODO batch this? try/catch
   console.log("Wrote stats:", stats);
+  printGranularStats();
+  printAggregateStats();
   res.send("Hello World!"); // TODO
 });
 

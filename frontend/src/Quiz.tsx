@@ -116,7 +116,7 @@ const Quiz = () => {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify(stats),
-    }); // TODO confirm express receives the post JSON payload
+    });
     // TODO: No need to await this, but would be good to async log whether or not it succeeded. Could eventually
     // build functionality to try again on failure.
 
