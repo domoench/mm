@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { writeStat } from "../lib/db.js";
+import { writeStat, getGranularStats } from "../lib/db.js";
 import { printGranularStats, printAggregateStats } from "../lib/mm.js";
 
 const app = express();
@@ -30,6 +30,11 @@ app.post("/stats", async (req, res) => {
   printGranularStats();
   printAggregateStats();
   res.send("Hello World!"); // TODO
+});
+
+app.get("/stats", async (req, res) => {
+  const stats = await getGranularStats();
+  res.json(stats);
 });
 
 app.listen(port, () => {
